@@ -1,13 +1,20 @@
 import os
 from dotenv import load_dotenv
+from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.responses import JSONResponse
 from src.routes import qrcode
 from datetime import datetime
 
+@asynccontextmanager
+async def lifespan(app: FastAPI):
+    print("Server is starting up!!")
+    yield
+    print("Server is shutting down!!")
+
 load_dotenv()
 
-app = FastAPI()
+app = FastAPI(lifespan=lifespan)
 
 app.include_router(qrcode.router, prefix="/v1/qrcode", tags=["qrcode"])
 
@@ -39,7 +46,8 @@ def get_server_uptime():
     return {"status": "OK", "uptime": str(server_uptime)}
 
 if __name__ == "__main__":
-    host = os.getenv("FASTAPI_HOST", "127.0.0.1")
+    host = os.getenv("FASTAPI_HOST", "0.0.0.0")
     port = int(os.getenv("FASTAPI_PORT", 8000))
+    print(f"Server using host={host}; port={port};")
     import uvicorn
     uvicorn.run(app, host, port)
