@@ -24,3 +24,4 @@ class QRCodeRequest(BaseModel):
     data_type: DataTypeEnum
     background_image_url: Optional[HttpUrl] = None
     size: Optional[SizeEnum] = SizeEnum.medium
+    color: str = '#000'
