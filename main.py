@@ -10,7 +10,7 @@ from fastapi.openapi.models import Tag
 from datetime import datetime
 
 from src.utils.swagger_tag import SwaggerTag
-from src.routes import qrcode
+from src.routes import generators
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -24,7 +24,7 @@ load_dotenv()
 
 rootTag = SwaggerTag(name="Root", description="Root API operations")
 healthCheckTag = SwaggerTag(name="HealthCheck", description="HealthCheck API operations")
-qrcodeTag = SwaggerTag(name="QRCode", description="QRCode API operations")
+generatorsTag = SwaggerTag(name="Generators", description="Generators API operations")
 
 description = """
 Awesome FAST APIs at your service 🚀
@@ -49,7 +49,7 @@ app = FastAPI(lifespan=lifespan,
               openapi_tags=[
                   Tag(name=rootTag.name, description=rootTag.description),
                   Tag(name=healthCheckTag.name, description=healthCheckTag.description),
-                  Tag(name=qrcodeTag.name, description=qrcodeTag.description),
+                  Tag(name=generatorsTag.name, description=generatorsTag.description)
                 ]
             )
 
@@ -68,7 +68,7 @@ app.mount("/static", StaticFiles(directory="static"), name="static")
 
 # Configure Routers
 
-app.include_router(qrcode.router, prefix="/api/v1/qrcode", tags=[qrcodeTag.name])
+app.include_router(generators.router, prefix="/api/v1/generators", tags=[generatorsTag.name])
 
 @app.get("/", response_class=JSONResponse, tags=[rootTag.name])
 def root():
