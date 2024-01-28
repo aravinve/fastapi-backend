@@ -1,6 +1,7 @@
 from enum import Enum
 from typing import Optional
-from pydantic import BaseModel, HttpUrl
+from pydantic import BaseModel, HttpUrl, validator
+import sys
 
 
 class DataTypeEnum(str, Enum):
@@ -46,3 +47,49 @@ class SecretGeneratorRequest(BaseModel):
 
 class ColorGeneratorRequest(BaseModel):
     count: int = 1
+
+class NumberGeneratorRequest(BaseModel):
+    count: int = 1
+    min: int = -sys.maxsize - 1
+    max: int = sys.maxsize
+
+class BarcodeGeneratorRequest(BaseModel):
+    data: int
+    
+    @validator("data")
+    def validate_data_length(cls, value):
+        min_length = 12
+        str_value = str(value)
+        if len(str_value) < min_length:
+            raise ValueError(f"Value must be an integer with a minimum length of {min_length} digits.")
+        return value
+    
+class FakerCategory(str, Enum):
+    username = "username"
+    address = "address"
+    firstname = "firstname"
+    lastname = "lastname"
+    email = "email"
+    phone_number = "phone_number"
+    date_of_birth = "date_of_birth"
+    company = "company"
+    word = "word"
+    sentence = "sentence"
+    paragraph = "paragraph"
+    text = "text"
+    emoji = "emoji"
+    date = "date"
+    profile = "profile"
+    location = "location"
+    currency = "currency"
+
+class FakerGeneratorRequest(BaseModel):
+    count: int = 1
+    fakerCategory: Optional[FakerCategory] = FakerCategory.username
+
+    @validator("count")
+    def validate_data_length(cls, value):
+        max_length = 100
+        if value > max_length:
+            raise ValueError(f"Value cannot be greater than {max_length}.")
+        return value
