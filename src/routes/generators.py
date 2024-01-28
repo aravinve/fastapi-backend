@@ -1,7 +1,7 @@
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import StreamingResponse
 
-from src.models.generator_models import  QRCodeGeneratorRequest, UUIDGeneratorRequest, TextGeneratorRequest, SecretGeneratorRequest, ColorGeneratorRequest, NumberGeneratorRequest, BarcodeGeneratorRequest, FakerGeneratorRequest, FakerCategory
+from src.models.generator_models import QRCodeGeneratorRequest, UUIDGeneratorRequest, TextGeneratorRequest, SecretGeneratorRequest, ColorGeneratorRequest, NumberGeneratorRequest, BarcodeGeneratorRequest, FakerGeneratorRequest
 
 from src.services.generators.qrcode_generator import generate_qrcode
 from src.services.generators.uuid_generator import generate_random_uuids
