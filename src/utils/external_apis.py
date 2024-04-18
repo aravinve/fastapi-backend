@@ -1,0 +1,1 @@
+zen_quotes_api_url = "https://zenquotes.io/api/random"
