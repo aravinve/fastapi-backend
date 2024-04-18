@@ -3,7 +3,7 @@ import requests
 from fastapi import HTTPException
 from fastapi.encoders import jsonable_encoder
 
-from src.utils.external_apis import zen_quotes_api_url
+from src.utils.external_apis import zen_quotes_api_url, chuck_jokes_api_url
 
 async def generate_quote():
     response = requests.get(zen_quotes_api_url)
@@ -16,3 +16,14 @@ async def generate_quote():
     else:
         error_message = {"error": "Failed to fetch"}
         raise HTTPException(status_code=response.status_code, detail=jsonable_encoder(error_message))
+    
+async def generate_chuck_jokes():
+    response = requests.get(chuck_jokes_api_url)
+    if response.status_code == 200:
+        data = response.json()
+        result = data['value']
+        return result
+    else:
+        error_message = {"error": "Failed to fetch"}
+        raise HTTPException(status_code=response.status_code, detail=jsonable_encoder(error_message))
+

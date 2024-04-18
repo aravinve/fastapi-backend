@@ -11,7 +11,7 @@ from src.services.generators.color_generator import generate_random_hex_color
 from src.services.generators.number_generator import generate_random_numbers
 from src.services.generators.barcode_generator import generate_barcode
 from src.services.generators.faker_generator import generate_random
-from src.services.generators.quote_generator import generate_quote
+from src.services.generators.external_api_data_generator import generate_quote, generate_chuck_jokes
 
 from src.utils.http_client import DownloadClient
 
@@ -66,4 +66,9 @@ def faker_generator(request_data: FakerGeneratorRequest) -> dict:
 @router.get("/quote")
 async def quote_generator() -> dict:
     result = await generate_quote()
+    return {"result": result}
+
+@router.get("/chuck-jokes")
+async def chuck_jokes_generator() -> dict:
+    result = await generate_chuck_jokes()
     return {"result": result}
